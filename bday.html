@@ -42,9 +42,17 @@
 
     #content {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 60px;
+  right: 120px;
 }
+#content {
+  display: none;
+}
+
+.active #content {
+  display: block;
+}
+
 
 
     #intro-message {
@@ -99,38 +107,28 @@
     }
 
     .li{
-      margin-left: 90px;
+      margin-left: 60px;
     }
 
     .lo{
       font-family: LunaJune;
-      margin-left: 350px;
+      margin-left: 230px;
       font-size: small;
       color: #FFCC99;
     }
 
     #day,#hrs,#min,#sec{
       font-family: 'KorgaRough';
-      font-size: 10px;
+      font-size: 25px;
       color: #E55C5C;
       margin: 0px 5px 0px 5px;
     }
 
     #years,#months,#weeks,#days,#hours,#minutes,#seconds{
       font-family: 'CakeZombie';
-      font-size: 10px;
+      font-size: 25px;
       color: #87CEEB;
     }
-
-    /* Optional: Hide page entirely on desktop if desired */
-    /* Remove this if you want it to work everywhere */
-    /* 
-    @media (min-width: 768px) {
-      #page-wrapper {
-        display: none;
-      }
-    }
-    */
   </style>
 </head>
 <body>
@@ -145,21 +143,21 @@
     </div>
 
     <div id="content">
-    <span class="duration">For <span id="day"></span> days, <span id="hrs"></span> hours, <span id="min"></span> mins and <span id="sec"></span> sec,</span><br>
-    <span class="duration li">the universe has been quietly celebrating you.</span><br><br>
-    <span class="lo">~your's Chetaa ❤️‍🔥</span><br><br>
-    <div style="margin-left: 140px;">
-      <img src="icons/lamp.gif" height="80" style="margin-left: 95px;"><br>
-      <span style="font-family: ChicariaDEMO;color: #F7CAC9;">
-        <span id="years" style="margin-left: 100px;"></span> years<br>
-        <span id="months" style="margin-left: 88px;"></span> months<br>
-        <span id="weeks" style="margin-left: 88px;color: #87CEEB;"></span> weeks<br>
-        <span id="days" style="margin-left: 80px;"></span> days<br>
-        <span id="hours" style="margin-left: 58px;"></span> hours<br>
-        <span id="minutes" style="margin-left: 45px;"></span> minutes<br>
-        <span id="seconds" style="margin-left: 23px;"></span> seconds<br>
-      </span>
-    </div>
+      <span class="duration">For <span id="day"></span> days, <span id="hrs"></span> hours, <span id="min"></span> mins and <span id="sec" style="width: 2ch;display: inline-block;"></span> sec,</span><br>
+      <span class="duration li">the universe has been quietly celebrating you.</span><br><br>
+      <span class="lo">~your's Chetaa ❤️‍🔥</span><br><br>
+      <div style="margin-left: 60px;">
+        <img src="icons/lamp.gif" height="50" style="margin-left: 75px;"><br>
+        <span style="font-family: ChicariaDEMO;color: #F7CAC9;font-size: small;">
+          <span id="years" style="margin-left: 80px;"></span> years<br>
+          <span id="months" style="margin-left: 73px;"></span> months<br>
+          <span id="weeks" style="margin-left: 70px;color: #87CEEB;"></span> weeks<br>
+          <span id="days" style="margin-left: 60px;"></span> days<br>
+          <span id="hours" style="margin-left: 50px;"></span> hours<br>
+          <span id="minutes" style="margin-left: 40px;"></span> minutes<br>
+          <span id="seconds" style="margin-left: 23px;width: 9ch;display: inline-block;"></span>&nbsp; seconds<br>
+        </span>
+      </div>
   </div>
   </div>
 

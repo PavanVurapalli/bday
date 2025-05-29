@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Landscape Video with Orientation Lock</title>
+  <title>Landscape Video with Orientation Lock Fix</title>
   <style>
     html, body {
       margin: 0; padding: 0; height: 100%; overflow: hidden; background: black;
@@ -51,7 +51,7 @@
 </head>
 <body>
   <!-- Video -->
-  <video id="bg-video" autoplay muted loop playsinline>
+  <video id="bg-video" autoplay muted loop playsinline webkit-playsinline>
     <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
@@ -76,7 +76,7 @@
           await docElm.msRequestFullscreen();
         }
 
-        // Try to lock orientation
+        // Try to lock orientation to landscape
         if (screen.orientation && screen.orientation.lock) {
           try {
             await screen.orientation.lock('landscape');
@@ -85,12 +85,18 @@
           }
         }
 
-        // Play the video explicitly after fullscreen
-        try {
-          await video.play();
-        } catch (err) {
-          console.warn('Video play failed:', err);
-        }
+        // Load video again (some browsers need this)
+        video.load();
+
+        // Wait a little to let fullscreen & orientation settle
+        setTimeout(async () => {
+          try {
+            await video.play();
+          } catch (err) {
+            console.warn('Video play failed:', err);
+          }
+        }, 500); // 500ms delay
+
       } catch (err) {
         console.warn('Fullscreen request failed:', err);
       }

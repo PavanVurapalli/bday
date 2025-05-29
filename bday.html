@@ -3,25 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Background Video</title>
+  <title>Rotate Video to Landscape</title>
   <style>
-    /* Make the video cover entire viewport while preserving aspect ratio */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
     #bg-video {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      object-fit: cover; /* Use cover to maintain aspect ratio */
+      object-fit: cover;
       z-index: -1;
+      transform-origin: center center;
+      transition: transform 0.5s ease; /* smooth rotation */
     }
 
-    /* Optional: ensure body and html fill the viewport */
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden; /* prevent scrollbars */
+    /* Rotate the video when in portrait */
+    @media (orientation: portrait) {
+      #bg-video {
+        width: 100vh;
+        height: 100vw;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(90deg);
+      }
     }
   </style>
 </head>

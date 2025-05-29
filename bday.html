@@ -1,45 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Landscape Video</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Landscape Video with Orientation Lock</title>
   <style>
     html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background: black;
+      margin: 0; padding: 0; height: 100%; overflow: hidden; background: black;
     }
-
     #bg-video {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: fill;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      object-fit: cover;
       z-index: -1;
+      background: black;
     }
-
     #rotate-message {
       display: none;
       position: fixed;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.8);
+      background: rgba(0,0,0,0.8);
       color: white;
       padding: 20px 30px;
       font-size: 18px;
-      text-align: center;
       border-radius: 10px;
-      z-index: 1000;
       cursor: pointer;
+      user-select: none;
+      z-index: 1000;
+      text-align: center;
     }
-
-    /* Hide video in portrait mode */
     @media screen and (orientation: portrait) {
       #bg-video {
         display: none;
@@ -48,23 +39,20 @@
         display: block;
       }
     }
-
-    /* Show video in landscape mode */
     @media screen and (orientation: landscape) {
-      #rotate-message {
-        display: none;
-      }
       #bg-video {
         display: block;
+      }
+      #rotate-message {
+        display: none;
       }
     }
   </style>
 </head>
 <body>
-
-  <!-- Background Video -->
+  <!-- Video -->
   <video id="bg-video" autoplay muted loop playsinline>
-    <source src="videos/small.mp4" type="video/mp4">
+    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
 
@@ -73,25 +61,38 @@
     Tap here to rotate to landscape and enter fullscreen.
   </div>
 
-  <!-- JavaScript -->
   <script>
-    function requestLandscape() {
+    async function requestLandscape() {
       const docElm = document.documentElement;
+      const video = document.getElementById('bg-video');
 
-      // Request fullscreen
-      if (docElm.requestFullscreen) {
-        docElm.requestFullscreen();
-      } else if (docElm.webkitRequestFullscreen) {
-        docElm.webkitRequestFullscreen();
-      } else if (docElm.msRequestFullscreen) {
-        docElm.msRequestFullscreen();
-      }
+      try {
+        // Request fullscreen
+        if (docElm.requestFullscreen) {
+          await docElm.requestFullscreen();
+        } else if (docElm.webkitRequestFullscreen) {
+          await docElm.webkitRequestFullscreen();
+        } else if (docElm.msRequestFullscreen) {
+          await docElm.msRequestFullscreen();
+        }
 
-      // Try to lock orientation
-      if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock('landscape').catch(err => {
-          console.warn('Orientation lock failed:', err);
-        });
+        // Try to lock orientation
+        if (screen.orientation && screen.orientation.lock) {
+          try {
+            await screen.orientation.lock('landscape');
+          } catch (err) {
+            console.warn('Orientation lock failed:', err);
+          }
+        }
+
+        // Play the video explicitly after fullscreen
+        try {
+          await video.play();
+        } catch (err) {
+          console.warn('Video play failed:', err);
+        }
+      } catch (err) {
+        console.warn('Fullscreen request failed:', err);
       }
     }
   </script>

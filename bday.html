@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Landscape Video</title>
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+    }
+
     #bg-video {
       position: fixed;
       top: 0;
@@ -15,43 +23,77 @@
       z-index: -1;
     }
 
-    /* Hide video in portrait mode */
-    @media screen and (orientation: portrait) {
-      #bg-video {
-        display: none;
-      }
-    }
-
-    /* Optional: Show message in portrait mode */
     #rotate-message {
       display: none;
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(0, 0, 0, 0.8);
       color: white;
-      padding: 20px;
+      padding: 20px 30px;
       font-size: 18px;
       text-align: center;
+      border-radius: 10px;
       z-index: 1000;
+      cursor: pointer;
     }
 
+    /* Hide video in portrait mode */
     @media screen and (orientation: portrait) {
+      #bg-video {
+        display: none;
+      }
       #rotate-message {
+        display: block;
+      }
+    }
+
+    /* Show video in landscape mode */
+    @media screen and (orientation: landscape) {
+      #rotate-message {
+        display: none;
+      }
+      #bg-video {
         display: block;
       }
     }
   </style>
 </head>
 <body>
-  <video id="bg-video" autoplay muted loop>
+
+  <!-- Background Video -->
+  <video id="bg-video" autoplay muted loop playsinline>
     <source src="videos/small.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 
-  <div id="rotate-message">
-    Please rotate your device to landscape mode to view the video.
+  <!-- Rotate Message -->
+  <div id="rotate-message" onclick="requestLandscape()">
+    Tap here to rotate to landscape and enter fullscreen.
   </div>
+
+  <!-- JavaScript -->
+  <script>
+    function requestLandscape() {
+      const docElm = document.documentElement;
+
+      // Request fullscreen
+      if (docElm.requestFullscreen) {
+        docElm.requestFullscreen();
+      } else if (docElm.webkitRequestFullscreen) {
+        docElm.webkitRequestFullscreen();
+      } else if (docElm.msRequestFullscreen) {
+        docElm.msRequestFullscreen();
+      }
+
+      // Try to lock orientation
+      if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape').catch(err => {
+          console.warn('Orientation lock failed:', err);
+        });
+      }
+    }
+  </script>
 </body>
 </html>

@@ -2,105 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Landscape Video with Orientation Lock Fix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Background Video</title>
   <style>
-    html, body {
-      margin: 0; padding: 0; height: 100%; overflow: hidden; background: black;
-    }
+    /* Make the video cover entire viewport while preserving aspect ratio */
     #bg-video {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      object-fit: cover;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover; /* Use cover to maintain aspect ratio */
       z-index: -1;
-      background: black;
     }
-    #rotate-message {
-      display: none;
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0,0,0,0.8);
-      color: white;
-      padding: 20px 30px;
-      font-size: 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      user-select: none;
-      z-index: 1000;
-      text-align: center;
-    }
-    @media screen and (orientation: portrait) {
-      #bg-video {
-        display: none;
-      }
-      #rotate-message {
-        display: block;
-      }
-    }
-    @media screen and (orientation: landscape) {
-      #bg-video {
-        display: block;
-      }
-      #rotate-message {
-        display: none;
-      }
+
+    /* Optional: ensure body and html fill the viewport */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; /* prevent scrollbars */
     }
   </style>
 </head>
 <body>
-  <!-- Video -->
-  <video id="bg-video" autoplay muted loop playsinline webkit-playsinline>
-    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="videos/small.mp4" type="video/mp4" />
     Your browser does not support the video tag.
   </video>
-
-  <!-- Rotate Message -->
-  <div id="rotate-message" onclick="requestLandscape()">
-    Tap here to rotate to landscape and enter fullscreen.
-  </div>
-
-  <script>
-    async function requestLandscape() {
-      const docElm = document.documentElement;
-      const video = document.getElementById('bg-video');
-
-      try {
-        // Request fullscreen
-        if (docElm.requestFullscreen) {
-          await docElm.requestFullscreen();
-        } else if (docElm.webkitRequestFullscreen) {
-          await docElm.webkitRequestFullscreen();
-        } else if (docElm.msRequestFullscreen) {
-          await docElm.msRequestFullscreen();
-        }
-
-        // Try to lock orientation to landscape
-        if (screen.orientation && screen.orientation.lock) {
-          try {
-            await screen.orientation.lock('landscape');
-          } catch (err) {
-            console.warn('Orientation lock failed:', err);
-          }
-        }
-
-        // Load video again (some browsers need this)
-        video.load();
-
-        // Wait a little to let fullscreen & orientation settle
-        setTimeout(async () => {
-          try {
-            await video.play();
-          } catch (err) {
-            console.warn('Video play failed:', err);
-          }
-        }, 500); // 500ms delay
-
-      } catch (err) {
-        console.warn('Fullscreen request failed:', err);
-      }
-    }
-  </script>
 </body>
 </html>

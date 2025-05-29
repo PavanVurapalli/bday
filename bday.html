@@ -3,43 +3,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tap to Rotate and Fullscreen on Mobile</title>
+  <title>Tap to Rotate and Fullscreen</title>
   <style>
     html, body {
-      margin: 0; padding: 0; height: 100%; overflow: hidden; background: black;
-      touch-action: manipulation; /* improve tap responsiveness */
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+      touch-action: manipulation;
     }
+
     #page-wrapper {
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
       transform-origin: center center;
       transition: transform 0.5s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: black;
     }
+
     #bg-video {
       position: absolute;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       z-index: -1;
+      display: none;
     }
+
     #content {
-      position: relative;
-      z-index: 1;
       color: white;
       font-family: sans-serif;
-      padding: 20px;
       text-align: center;
+      padding: 20px;
+      display: none;
     }
+
+    #intro-message {
+      color: white;
+      font-family: sans-serif;
+      font-size: 1.2em;
+      text-align: center;
+      padding: 20px;
+    }
+
     .rotated {
       width: 100vh !important;
       height: 100vw !important;
       top: 50% !important;
       left: 50% !important;
       transform: translate(-50%, -50%) rotate(90deg) !important;
+    }
+
+    .active #bg-video,
+    .active #content {
+      display: block;
+    }
+
+    .active #intro-message {
+      display: none;
+    }
+
+    /* Hide everything by default on desktop */
+    @media (min-width: 768px) {
+      #page-wrapper {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -49,21 +87,24 @@
       <source src="videos/small.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
-    <div id="content">
-      <h1>Hello, this is page content!</h1>
+
+    <div id="intro-message">
       <p>Tap anywhere on mobile to rotate and fullscreen.</p>
+    </div>
+
+    <div id="content">
+      <h1>Welcome!</h1>
+      <p>This is the rotated fullscreen view.</p>
     </div>
   </div>
 
   <script>
     const pageWrapper = document.getElementById('page-wrapper');
 
-    // Utility: detect mobile devices
     function isMobile() {
       return /Mobi|Android/i.test(navigator.userAgent);
     }
 
-    // Request fullscreen helper (with cross-browser support)
     function requestFullscreen(element) {
       if (element.requestFullscreen) {
         element.requestFullscreen();
@@ -75,18 +116,14 @@
     }
 
     if (isMobile()) {
+      let rotated = false;
+
       document.body.addEventListener('click', () => {
-        // Toggle rotated class on tap
-        if (pageWrapper.classList.contains('rotated')) {
-          pageWrapper.classList.remove('rotated');
-          if (document.fullscreenElement) {
-            document.exitFullscreen();
-          }
-        } else {
-          pageWrapper.classList.add('rotated');
-          requestFullscreen(document.documentElement); // fullscreen whole page
-        }
-      }, { once: false, passive: true });
+        if (rotated) return;
+        pageWrapper.classList.add('rotated', 'active');
+        requestFullscreen(document.documentElement);
+        rotated = true;
+      }, { once: true });
     }
   </script>
 </body>

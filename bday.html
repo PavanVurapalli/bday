@@ -3,44 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rotate Video to Landscape</title>
+  <title>Rotate Whole Page on Mobile Portrait</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
+      background: black;
     }
 
-    #bg-video {
+    /* Container wrapping all page content */
+    #page-wrapper {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
-      object-fit: cover;
-      z-index: -1;
+      overflow: hidden;
+      /* default no rotation */
       transform-origin: center center;
-      transition: transform 0.5s ease; /* smooth rotation */
+      transition: transform 0.5s ease;
     }
 
-    /* Rotate the video when in portrait */
+    /* Background video styles */
+    #bg-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    /* Rotate whole page in portrait */
     @media (orientation: portrait) {
-      #bg-video {
-        width: 100vh;
+      #page-wrapper {
+        width: 100vh;  /* swap width & height */
         height: 100vw;
-        position: fixed;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%) rotate(90deg);
       }
     }
+
+    /* Example content to show on top of video */
+    #content {
+      position: relative;
+      z-index: 1;
+      color: white;
+      font-family: sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <video id="bg-video" autoplay muted loop playsinline>
-    <source src="videos/small.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
+  <div id="page-wrapper">
+    <video id="bg-video" autoplay muted loop playsinline>
+      <source src="videos/small.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
+    <div id="content">
+      <h1>Hello, this is rotated page content!</h1>
+      <p>Rotate your device to see effect.</p>
+    </div>
+  </div>
 </body>
 </html>

@@ -45,15 +45,21 @@
   top: 30px;
   right: 60px;
 }
-#content {
-  display: none;
-}
+    #content {
+      display: none;
+    }
 
-.active #content {
-  display: block;
-}
+    .active #content {
+      display: block;
+    }
 
+    #wish{
+      display: none;
+    }
 
+    .active #wish{
+      display: block;
+    }
 
     #intro-message {
       color: white;
@@ -135,8 +141,11 @@
   <div id="page-wrapper">
     <video id="bg-video" autoplay muted loop playsinline>
       <source src="videos/small.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
     </video>
+
+    <audio id="bg-music" loop>
+      <source src="music/music.mp3">
+    </audio>
 
     <div id="intro-message">
       <p>Tap anywhere to rotate and fullscreen.</p>
@@ -159,7 +168,8 @@
         </span>
       </div>
   </div>
-    <div style="display: flex;position: absolute;left: 10px;top: 320px;">
+
+  <div style="position: absolute;left: 30px;top: 320px;" id="wish">
     <img src="font/Image0008 copy.png" height="40">
     <img src="font/Image0001 copy.png" height="40" style="position: absolute;left: 20px;">
     <img src="font/Image0016 copy.png" height="40" style="position: absolute;left: 40px;">
@@ -175,8 +185,8 @@
     <img src="font/Image0001 copy.png" height="40" style="position: absolute;left: 235px;">
     <img src="font/Image0025 copy.png" height="40" style="position: absolute;left: 253px;">
 
-    <div id="name">
-       
+    <div id="name" style="position: absolute;top: 0px;">
+      
     </div>
     
   </div>
@@ -201,8 +211,63 @@
       if (rotated) return;
       pageWrapper.classList.add('rotated', 'active');
       requestFullscreen(document.documentElement);
+      document.getElementById('bg-music').play().catch(err => {
+        console.error("Audio playback failed:", err);
+      });
       rotated = true;
     }, { once: true });
+
+
+    let names=[
+      `
+        <img src="font/Image0019.png" height="40" style="position: absolute;left: 295px;">
+        <img src="font/Image0001.png" height="40" style="position: absolute;left: 318px;">
+        <img src="font/Image0018.png" height="40" style="position: absolute;left: 343px;">
+        <img src="font/Image0001.png" height="40" style="position: absolute;left: 368px;">
+        <img src="font/Image0004.png" height="40" style="position: absolute;left: 393px;">
+        <img src="font/Image0001.png" height="40" style="position: absolute;left: 418px;">
+      `,
+      `
+        <img src="font/Image0003.png" height="40" style="position: absolute;left: 295px;">
+        <img src="font/Image0008.png" height="40" style="position: absolute;left: 320px;">
+        <img src="font/Image0021.png" height="40" style="position: absolute;left: 345px;">
+        <img src="font/Image0020.png" height="40" style="position: absolute;left: 368px;">
+        <img src="font/Image0014.png" height="40" style="position: absolute;left: 392px;">
+        <img src="font/Image0005.png" height="40" style="position: absolute;left: 415px;">
+        <img src="font/Image0025.png" height="40" style="position: absolute;left: 436px;">
+      `,
+      `
+        <img src="font/Image0019.png" height="40" style="position: absolute;left: 295px;">
+        <img src="font/Image0021.png" height="40" style="position: absolute;left: 320px;">
+        <img src="font/Image0002.png" height="40" style="position: absolute;left: 345px;">
+        <img src="font/Image0002.png" height="40" style="position: absolute;left: 368px;">
+        <img src="font/Image0021.png" height="40" style="position: absolute;left: 394px;">
+      `,
+      `
+        <img src="font/Image0001.png" height="40" style="position: absolute;left: 295px;">
+        <img src="font/Image0013.png" height="40" style="position: absolute;left: 320px;">
+        <img src="font/Image0013.png" height="40" style="position: absolute;left: 347px;">
+        <img src="font/Image0001.png" height="40" style="position: absolute;left: 372px;">
+        <img src="font/Image0009.png" height="40" style="position: absolute;left: 392px;">
+      `,
+      `
+        <img src="font/Image0005.png" height="40" style="position: absolute;left: 295px;">
+        <img src="font/Image0018.png" height="40" style="position: absolute;left: 320px;">
+        <img src="font/Image0018.png" height="40" style="position: absolute;left: 345px;">
+        <img src="font/Image0009.png" height="40" style="position: absolute;left: 368px;">
+        <span style="position: absolute;left: 410px;font-size: x-large;">🌸</span>
+      `,
+      `
+        <img src="icons/pig.png" height="65" style="position: absolute;left: 300px;top: -20px;">
+      `,
+      `
+        <img src="icons/buffalo.png" height="65" style="position: absolute;left: 300px;top: -20px;">
+      `,
+      `
+        <img src="icons/dog.png" height="65" style="position: absolute;left: 300px;top: -20px;">
+      `
+    ]
+    let index=0
 
     setInterval(()=>{
       let presentDay=new Date();
